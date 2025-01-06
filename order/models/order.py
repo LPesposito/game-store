@@ -4,7 +4,7 @@ from product.models.product import Product
 from django.contrib.auth.models import User
 
 
-class Oder(models.Model):
+class Order(models.Model):
     product = models.ManyToManyField(Product,blank=False)
-    user = models.ForeignKey(User, null=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     
