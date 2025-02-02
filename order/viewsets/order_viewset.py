@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.mixins import CreateModelMixin
 from rest_framework.viewsets import ModelViewSet
 
-import models,serializers
+from order import models, serializers
 
 class OrderViewSet(ModelViewSet):
     serializer_class = serializers.OrderSerializer
