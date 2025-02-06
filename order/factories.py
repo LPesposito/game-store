@@ -19,6 +19,7 @@ class OrderFactory(factory.django.DjangoModelFactory):
     def product(self, create, extracted, **kwargs):
         if not create:
             return
+        
         if extracted:
             for product in extracted:
                 self.product.add(product)
