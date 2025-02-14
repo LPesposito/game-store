@@ -6,6 +6,7 @@ class CategoryFactory(factory.django.DjangoModelFactory):
     slug = factory.Faker('pystr')
     description = factory.Faker('pystr')
     
+    
     class Meta:
         model = Category
 
