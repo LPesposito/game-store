@@ -5,7 +5,7 @@ from product.serializers.category_serializer import CategorySerializer
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    categories = CategorySerializer(required=True, many=True)
+    categories = CategorySerializer(many=True,read_only=True)
     
     class Meta:
         model = Product

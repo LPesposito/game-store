@@ -36,7 +36,7 @@ class TestProductViewSet(APITestCase):
         data = json.dumps({
             'title': 'notebook',
             'price': 800.00,
-            'categories': category,
+            'categories': [{'title': category.title}],
         })
         
         response = self.client.post(
@@ -45,7 +45,7 @@ class TestProductViewSet(APITestCase):
             content_type='application/json'
         )
         
-        import pdb; pdb.set_trace()
+        
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         create_product = Product.objects.get(title='notebook')
         self.assertEqual(create_product.title, 'notebook')
