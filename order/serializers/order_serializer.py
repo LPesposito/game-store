@@ -10,6 +10,7 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = ['products', 'total', 'user']
+        
 
     def create(self, validated_data):
         products_data = validated_data.pop('products')  # Corrected key for products
