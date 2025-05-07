@@ -14,13 +14,13 @@ class TestOrderViewSet(APITestCase):
     client = APIClient()
 
     def setUp(self):
-        self.user = UserFactory()  # Create a user
-        self.client.force_authenticate(user=self.user)  # Authenticate the test client
+        self.user = UserFactory()  
+        self.client.force_authenticate(user=self.user)  
         self.product = ProductFactory(categories=[CategoryFactory(title='action')])
-        self.product2 = ProductFactory(categories=[CategoryFactory(title='adventure')])  # Additional product
-        self.order = OrderFactory(user=self.user)  # Create the order without products
-        self.order.products.set([self.product, self.product2])  # Add products to the order
-        self.order.save()  # Save to calculate the total
+        self.product2 = ProductFactory(categories=[CategoryFactory(title='adventure')])  
+        self.order = OrderFactory(user=self.user)  
+        self.order.products.set([self.product, self.product2])  
+        self.order.save()  
         token = Token.objects.create(user=self.user)
         token.save()
         
