@@ -1,26 +1,19 @@
 from rest_framework import serializers
 from order.models.order import Order
 from product.models.product import Product
-from product.serializers.product_serializer import ProductSerializer
 from django.contrib.auth.models import User
 
 class OrderSerializer(serializers.ModelSerializer):
-    product = ProductSerializer(many=True)
+    products = serializers.PrimaryKeyRelatedField(queryset=Product.objects.all(), many=True)
     user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
 
     class Meta:
         model = Order
-        fields = ['product', 'total', 'user']
-
-    def get_total(self, obj):
-        total = sum([product.price for product in obj.product.all()])
-        return total
+        fields = ['products', 'total', 'user']
 
     def create(self, validated_data):
-        product_data = validated_data.pop('product')
+        products_data = validated_data.pop('product')  # IDs dos produtos
         user = validated_data.pop('user')
         order = Order.objects.create(user=user, **validated_data)
-        for product in product_data:
-            product_instance, created = Product.objects.get_or_create(**product)
-            order.product.add(product_instance)
+        order.product.set(products_data)  # Associa os produtos ao pedido
         return order
