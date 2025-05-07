@@ -12,8 +12,10 @@ class OrderSerializer(serializers.ModelSerializer):
         fields = ['products', 'total', 'user']
 
     def create(self, validated_data):
-        products_data = validated_data.pop('product')  # IDs dos produtos
+        products_data = validated_data.pop('products')  # Corrected key for products
         user = validated_data.pop('user')
         order = Order.objects.create(user=user, **validated_data)
-        order.product.set(products_data)  # Associa os produtos ao pedido
+        order.products.set(products_data)  # Associate products with the order
+        order.total = sum(product.price for product in order.products.all())  # Calculate total price
+        order.save()
         return order

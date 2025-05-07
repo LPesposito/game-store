@@ -17,7 +17,10 @@ class TestOrderViewSet(APITestCase):
         self.user = UserFactory()  # Create a user
         self.client.force_authenticate(user=self.user)  # Authenticate the test client
         self.product = ProductFactory(categories=[CategoryFactory(title='action')])
-        self.order = OrderFactory(user=self.user, products=[self.product])  # Associate the order with the user
+        self.product2 = ProductFactory(categories=[CategoryFactory(title='adventure')])  # Additional product
+        self.order = OrderFactory(user=self.user)  # Create the order without products
+        self.order.products.set([self.product, self.product2])  # Add products to the order
+        self.order.save()  # Save to calculate the total
         token = Token.objects.create(user=self.user)
         token.save()
         
@@ -31,16 +34,17 @@ class TestOrderViewSet(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         order_data = json.loads(response.content)['results']
-        self.assertEqual(order_data[0]['products'][0][0], self.product.id)  
-        self.assertEqual(order_data[0]['total'], str(self.product.price)+'.00')
+        self.assertEqual(order_data[0]['products'][0], self.product.id)
+        self.assertEqual(order_data[0]['products'][1], self.product2.id)
+        self.assertEqual(order_data[0]['total'], str(self.product.price + self.product2.price) + '.00')
 
     
     def test_create_order(self):
         token = Token.objects.get(user__username=self.user.username)
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + token.key)
         data = {
-            'user': self.user.id,  # Envia o ID do usuário
-            'products': [self.product.id],  # Envia uma lista de IDs de produtos
+            'user': self.user.id,  
+            'products': [self.product.id, self.product2.id],  
         }
 
         response = self.client.post(
@@ -49,9 +53,8 @@ class TestOrderViewSet(APITestCase):
             content_type='application/json'
         )
 
-        print(response.content)  # Para depuração
-
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        create_order = Order.objects.get(user=self.user)
-        self.assertEqual(create_order.total, self.product.price)
-        self.assertIn(self.product, create_order.product.all())
+        create_order = Order.objects.filter(user=self.user, products__in=[self.product, self.product2]).distinct().first()
+        self.assertEqual(create_order.total, self.product.price + self.product2.price)
+        self.assertIn(self.product, create_order.products.all())
+        self.assertIn(self.product2, create_order.products.all())
