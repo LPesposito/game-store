@@ -16,7 +16,7 @@ Este é um projeto de Back-end desenvolvido para gerenciar uma loja de jogos. El
 
 1. Clone este repositório:
    ```bash
-   git clone https://github.com/seu-usuario/game-store.git
+   git clone https://github.com/LPesposito/game-store
    ```
 
 2. Instale o Poetry, caso ainda não tenha:
