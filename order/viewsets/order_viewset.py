@@ -7,4 +7,4 @@ from order import models, serializers
 
 class OrderViewSet(ModelViewSet):
     serializer_class = serializers.OrderSerializer
-    queryset = models.Order.objects.all()
+    queryset = models.Order.objects.all().order_by('id')
