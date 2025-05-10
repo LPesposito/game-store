@@ -23,13 +23,12 @@ class TestOrderViewSet(APITestCase):
         self.order.save()  
         token = Token.objects.create(user=self.user)
         token.save()
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + token.key)
         
         
     def test_order(self):
-        token = Token.objects.get(user__username=self.user.username)
-        self.client.credentials(HTTP_AUTHORIZATION='Token ' + token.key)
         response = self.client.get(
-            reverse('order-list', kwargs={'version': 'v1'}),
+            reverse('orders-list', kwargs={'version': 'v1'}),
         )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -40,15 +39,13 @@ class TestOrderViewSet(APITestCase):
 
     
     def test_create_order(self):
-        token = Token.objects.get(user__username=self.user.username)
-        self.client.credentials(HTTP_AUTHORIZATION='Token ' + token.key)
         data = {
             'user': self.user.id,  
             'products': [self.product.id, self.product2.id],  
         }
 
         response = self.client.post(
-            reverse('order-list', kwargs={'version': 'v1'}),
+            reverse('orders-list', kwargs={'version': 'v1'}),
             data=json.dumps(data),
             content_type='application/json'
         )
@@ -58,3 +55,33 @@ class TestOrderViewSet(APITestCase):
         self.assertEqual(create_order.total, self.product.price + self.product2.price)
         self.assertIn(self.product, create_order.products.all())
         self.assertIn(self.product2, create_order.products.all())
+        
+    def test_get_all_orders(self):
+        response = self.client.get(
+            reverse('orders-list', kwargs={'version': 'v1'}),
+        )
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        order_data = json.loads(response.content)
+        #import pdb; pdb.set_trace()
+        self.assertEqual(order_data['results'][0]['id'], self.order.id)
+        
+    def test_create_order_with_status(self) -> None:
+        product1 = ProductFactory(categories=[CategoryFactory(title='action')])
+        product2 = ProductFactory(categories=[CategoryFactory(title='adventure')])
+        total = product1.price + product2.price
+        data = json.dumps({
+    
+            'user': self.user.id,
+            'products': [product1.id, product2.id],
+        })
+        
+        response = self.client.post(
+            reverse('orders-list', kwargs={'version': 'v1'}),
+            data=data,
+            content_type='application/json'
+        )
+        
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        create_order = Order.objects.get(total=total)
+        self.assertEqual(create_order.total, total)

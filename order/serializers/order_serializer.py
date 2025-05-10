@@ -9,14 +9,14 @@ class OrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Order
-        fields = ['products', 'total', 'user']
+        fields = ['products', 'total', 'user','id']
+        read_only_fields = ['total', 'id']  
         
 
-    def create(self, validated_data):
-        products_data = validated_data.pop('products')  # Corrected key for products
+    def create(self, validated_data) -> Order:
+        products_data = validated_data.pop('products')
         user = validated_data.pop('user')
         order = Order.objects.create(user=user, **validated_data)
         order.products.set(products_data)  # Associate products with the order
-        order.total = sum(product.price for product in order.products.all())  # Calculate total price
-        order.save()
+        order.save()  # The total will be calculated in the model's save method
         return order
