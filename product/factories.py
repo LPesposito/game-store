@@ -10,6 +10,7 @@ class CategoryFactory(factory.django.DjangoModelFactory):
         model = Category
 
 class ProductFactory(factory.django.DjangoModelFactory):
+    id = factory.Sequence(lambda n: n + 1)
     title = factory.Faker('pystr')
     description = factory.Faker('pystr')
     price = factory.Faker('pyint')
