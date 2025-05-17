@@ -8,3 +8,4 @@ class Product(models.Model):
     price = models.PositiveIntegerField(null=True)
     active = models.BooleanField(default=True)
     categories = models.ManyToManyField(Category, blank=True)
+    image = models.ImageField(upload_to='products/', blank=True, null=True)
