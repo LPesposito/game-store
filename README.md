@@ -43,7 +43,7 @@ Este é um projeto de Back-end desenvolvido para gerenciar uma loja de jogos. El
 
 7. O servidor estará disponível em `http://localhost:8000` (ou na porta configurada).
 
-## Funcionalidades
+## Funcionalidades **#WIP**
 
 - Gerenciamento de jogos (CRUD)
 - Gerenciamento de clientes (CRUD)
