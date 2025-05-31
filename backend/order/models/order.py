@@ -1,15 +1,11 @@
 from django.db import models
-
-from product.models import Product
 from django.contrib.auth.models import User
 
 
 class Order(models.Model):
-    products = models.ManyToManyField(Product,blank=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    total = models.DecimalField(max_digits=10, decimal_places=2,default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+    total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs) 
-        self.total = sum(product.price for product in self.products.all())  
-        super().save(update_fields=['total'])  
+    def __str__(self):
+        return f"Order #{self.id} by {self.user.username}"

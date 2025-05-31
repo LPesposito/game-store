@@ -1,10 +1,23 @@
-from rest_framework.viewsets import ModelViewSet
-from rest_framework.authentication import TokenAuthentication
+from rest_framework import viewsets
+from order.models import Order
+from order.serializers import OrderSerializer
+from rest_framework.permissions import IsAuthenticated
 
-from order import models, serializers
 
-class OrderViewSet(ModelViewSet):
-    authentication_classes = [TokenAuthentication]    
+from rest_framework import mixins, viewsets
 
-    serializer_class = serializers.OrderSerializer
-    queryset = models.Order.objects.all().order_by('id')
+
+class OrderViewSet(
+    mixins.CreateModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.ListModelMixin,
+    viewsets.GenericViewSet
+):
+    serializer_class = OrderSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Order.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)

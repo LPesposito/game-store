@@ -1,3 +1,4 @@
+# Anotações para eu lembrar o que cada parte faz
 FROM python:3.12-slim
 
 # Instala dependências do sistema

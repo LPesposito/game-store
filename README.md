@@ -2,21 +2,34 @@
 
 ## Descrição do Projeto
 
-Este é um projeto de Back-end desenvolvido para gerenciar uma loja de jogos. Ele fornece funcionalidades para cadastro, consulta, atualização e exclusão de informações relacionadas a jogos, clientes e pedidos.
+Este é um projeto Full Stack para gerenciar uma loja de jogos, com back-end em Django Rest Framework e front-end moderno. O sistema permite cadastro, consulta, atualização e exclusão de informações relacionadas a jogos, clientes e pedidos.
 
 ## Tecnologias Utilizadas
 
-- Django Rest Framework
-- Python
-- Banco de Dados (ex.: PostgreSQL, SQLite, etc.)
-- Poetry para gerenciamento de dependências
-- Outras ferramentas e bibliotecas relevantes
+- **Back-end**
+  - Django Rest Framework
+  - Python
+  - Banco de Dados (ex.: PostgreSQL, SQLite, etc.)
+  - Poetry para gerenciamento de dependências
+
+- **Front-end**
+  - [Adicione aqui o framework/biblioteca, ex.: React, Vue, Angular]
+  - [Outras ferramentas relevantes do front-end]
 
 ## Como Executar o Projeto
 
-1. Clone este repositório:
+### 1. Clone este repositório:
+```bash
+git clone https://github.com/LPesposito/game-store
+```
+
+---
+
+### 2. Back-end
+
+1. Acesse a pasta do back-end:
    ```bash
-   git clone https://github.com/LPesposito/game-store
+   cd backend
    ```
 
 2. Instale o Poetry, caso ainda não tenha:
@@ -41,13 +54,41 @@ Este é um projeto de Back-end desenvolvido para gerenciar uma loja de jogos. El
    poetry run python manage.py runserver
    ```
 
-7. O servidor estará disponível em `http://localhost:8000` (ou na porta configurada).
+O back-end estará disponível em `http://localhost:8000`.
+
+---
+
+### 3. Front-end
+
+1. Acesse a pasta do front-end:
+   ```bash
+   cd frontend
+   ```
+
+2. Instale as dependências (exemplo para projetos Node.js):
+   ```bash
+   npm install
+   # ou
+   yarn install
+   ```
+
+3. Inicie o servidor de desenvolvimento:
+   ```bash
+   npm start
+   # ou
+   yarn start
+   ```
+
+O front-end estará disponível em `http://localhost:3000` (ou na porta configurada).
+
+---
 
 ## Funcionalidades **#WIP**
 
 - Gerenciamento de jogos (CRUD)
 - Gerenciamento de clientes (CRUD)
 - Gerenciamento de pedidos (CRUD)
+- Interface web amigável para interação com a API
 
 ## Contribuição
 
