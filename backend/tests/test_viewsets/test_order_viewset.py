@@ -6,8 +6,8 @@ from rest_framework.authtoken.models import Token
 
 from django.urls import reverse
 
-from product.factories import ProductFactory, CategoryFactory
-from order.factories import UserFactory, OrderFactory
+from tests.factories.product_factories import ProductFactory, CategoryFactory
+from tests.factories.order_factories import UserFactory, OrderFactory
 from order.models import Order
 
 class TestOrderViewSet(APITestCase):
