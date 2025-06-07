@@ -1,4 +1,4 @@
-import json 
+import json
 from rest_framework import status
 from rest_framework.test import APITestCase, APIClient
 from django.urls import reverse
@@ -7,40 +7,52 @@ from product.models import Product
 
 class TestProductViewSet(APITestCase):
     client = APIClient()
-    
+
     def setUp(self):
+        self.category = CategoryFactory()
         self.product = ProductFactory(
             title='pro controller',
-            price=200.00,
+            price=200,
+            categories=[self.category]
         )
-        
+
     def test_get_all_product(self):
         response = self.client.get(
             reverse('products-list', kwargs={'version': 'v1'}),
         )
+        if response.status_code != status.HTTP_200_OK:
+            print("test_get_all_product response:", response.status_code, response.content)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         product_data = json.loads(response.content)
-        self.assertEqual(product_data['results'][0]['title'], self.product.title)
-        self.assertEqual(product_data['results'][0]['price'], float(self.product.price))
-        self.assertEqual(product_data['results'][0]['active'], self.product.active)
-        # Adicione asserts para outros campos obrigatórios do model Product, se houver
-        # self.assertEqual(product_data['results'][0]['campo'], self.product.campo)
-        
+        result = product_data['results'][0]
+        self.assertEqual(result['title'], self.product.title)
+        self.assertEqual(result['price'], self.product.price)
+        self.assertEqual(result['active'], self.product.active)
+        # O campo de leitura é categories_detail
+        categories_detail = result['categories_detail']
+        self.assertTrue(any(cat['title'] == self.category.title for cat in categories_detail))
+        self.assertEqual(result['description'], self.product.description)
+        self.assertIn('images', result)
+
     def test_create_product(self):
         category = CategoryFactory()
-        data = json.dumps({
+        data = {
             'title': 'notebook',
-            'price': 800.00,
-            'categories': [{'title': category.title}],
-        })
+            'price': 800,
+            'categories': [category.id],
+            'description': 'desc test'
+        }
         response = self.client.post(
             reverse('products-list', kwargs={'version': 'v1'}),
-            data=data,
+            data=json.dumps(data),
             content_type='application/json'
         )
+        if response.status_code != status.HTTP_201_CREATED:
+            print("test_create_product response:", response.status_code, response.content)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         create_product = Product.objects.get(title='notebook')
         self.assertEqual(create_product.title, 'notebook')
-        self.assertEqual(create_product.price, 800.00)
-        # Adicione asserts para outros campos obrigatórios do model Product, se houver
-        # self.assertEqual(create_product.campo, valor_esperado)
+        self.assertEqual(create_product.price, 800)
+        self.assertIn(category, create_product.categories.all())
+        self.assertEqual(create_product.description, 'desc test')
+        self.assertTrue(create_product.active)

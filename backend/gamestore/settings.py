@@ -35,6 +35,8 @@ ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split(',')
 MY_APPS = [
     'order',
     'product',
+    'shop_cart',
+    'user',
 ]
 
 DJANGO_APPS = [
@@ -164,3 +166,5 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     ]
 }
+
+AUTH_USER_MODEL = 'user.CustomUser'
