@@ -37,6 +37,7 @@ MY_APPS = [
     'product',
     'shop_cart',
     'user',
+    'wallet.apps.WalletConfig',
 ]
 
 DJANGO_APPS = [
