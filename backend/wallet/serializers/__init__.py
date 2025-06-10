@@ -1,1 +1,1 @@
-from .wallet_serializer import WalletSerializer, WalletDepositSerializer
+from .wallet_serializer import WalletSerializer

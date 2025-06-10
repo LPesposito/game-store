@@ -1,27 +1,35 @@
-from rest_framework import viewsets, status
-from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
-
+from rest_framework import generics, permissions
 from wallet.models import Wallet
-from wallet.serializers import WalletSerializer, WalletDepositSerializer
+from wallet.serializers import WalletSerializer
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from decimal import Decimal
+
+class WalletDetailView(generics.RetrieveAPIView):
+    serializer_class = WalletSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user.wallet
 
 
-class WalletViewSet(viewsets.ViewSet):
-    permission_classes = [IsAuthenticated]
+class WalletAddFundsView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
 
-    def retrieve(self, request):
+    def post(self, request):
+        amount = request.data.get("amount")
+        if not amount:
+            return Response({"error": "Amount is required"}, status=400)
+        
+        try:
+            amount = Decimal(amount)
+            if amount <= 0:
+                raise ValueError
+        except:
+            return Response({"error": "Invalid amount"}, status=400)
+
         wallet = request.user.wallet
-        serializer = WalletSerializer(wallet)
-        return Response(serializer.data)
+        wallet.balance += amount
+        wallet.save()
 
-    @action(detail=False, methods=['post'])
-    def deposit(self, request):
-        serializer = WalletDepositSerializer(data=request.data)
-        if serializer.is_valid():
-            amount = serializer.validated_data['amount']
-            wallet = request.user.wallet
-            wallet.balance += amount
-            wallet.save()
-            return Response(WalletSerializer(wallet).data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"message": "Funds added successfully", "balance": wallet.balance})
