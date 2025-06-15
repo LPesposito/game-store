@@ -3,7 +3,6 @@ from order.models import Order
 from order.serializers import OrderSerializer
 from rest_framework.permissions import IsAuthenticated
 
-
 class OrderViewSet(
     mixins.CreateModelMixin,
     mixins.RetrieveModelMixin,

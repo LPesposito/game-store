@@ -1,5 +1,6 @@
 from django.db import models
 from user.models import CustomUser as User
+from django.utils import timezone
 
 class Wallet(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="wallet")
