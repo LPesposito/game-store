@@ -3,6 +3,8 @@ from rest_framework.test import APITestCase
 from rest_framework import status
 from user.models import CustomUser
 
+# User registration and listing tests
+
 class UserViewTests(APITestCase):
     def test_register_user(self):
         url = reverse('register')
@@ -23,4 +25,5 @@ class UserViewTests(APITestCase):
         url = reverse('user-list')
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertTrue(any(u['username'] == "user1" for u in response.data))
+        #print(response.data)
+        self.assertTrue(any(u['username'] == "user1" for u in response.data['results']))

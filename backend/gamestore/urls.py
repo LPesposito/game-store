@@ -11,4 +11,5 @@ urlpatterns = [
     path('api/wallet/', include('wallet.urls')),
     path('api/shop-cart/', include('shop_cart.urls')),
     path('api-token-auth/', obtain_auth_token, name='api-token-auth'),
+    path('api/user/', include('user.urls')),
 ]
