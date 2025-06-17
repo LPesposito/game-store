@@ -1,17 +1,18 @@
 from django.db import models
-from user.models import CustomUser as User
+from user.models import CustomUser
 from product.models import Product
-from django.utils import timezone
-
+import secrets
 
 class LibraryEntry(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="library")
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="in_libraries")
-    acquired_at = models.DateTimeField(default=timezone.now)
-    access_key = models.CharField(max_length=255, blank=True, null=True)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='library_entries')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    acquired_at = models.DateTimeField(auto_now_add=True)
+    access_key = models.CharField(max_length=64, unique=True, blank=True)
 
     class Meta:
-        unique_together = ['user', 'product']  # Evita jogos duplicados na biblioteca
+        unique_together = ('user', 'product')
 
-    def __str__(self):
-        return f"{self.user.username} - {self.product.title}"
+    def save(self, *args, **kwargs):
+        if not self.access_key:
+            self.access_key = secrets.token_hex(32)
+        super().save(*args, **kwargs)
