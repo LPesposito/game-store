@@ -1,1 +1,1 @@
-from .order_view import OrderViewSet
+from .order_viewset import OrderViewSet

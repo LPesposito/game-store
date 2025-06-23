@@ -15,8 +15,9 @@ class OrderSerializer(serializers.ModelSerializer):
             'total',
             'items',
             'user',
+            'status',  
         ]
-        read_only_fields = ['total', 'id', 'created_at','user']
+        read_only_fields = ['total', 'id', 'created_at', 'user', 'status']
 
     @transaction.atomic
     def create(self, validated_data):

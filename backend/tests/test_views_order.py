@@ -28,7 +28,7 @@ class OrderViewTests(APITestCase):
             ]
         }
         response = self.client.post(url, data, format='json')
-        print(response.data)
-        print(LibraryEntry.objects.all())
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.data['items'][0]['product'], self.product.id)
+
+        self.assertEqual(LibraryEntry.objects.count(), 0)
