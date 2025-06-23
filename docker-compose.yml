@@ -20,6 +20,8 @@ services:
     container_name: loja-frontend
     networks:
       - frontend
+    ports:
+      - "3000:80"
 
   db:
     image: postgres:15
@@ -32,7 +34,7 @@ services:
     networks:
       - backend
   
-  networks:
+networks:
     backend:
       driver: bridge
     
