@@ -4,6 +4,7 @@ from rest_framework import status
 from user.models import CustomUser
 from order.models import Order
 from product.models import Product, Category
+from library.models import LibraryEntry
 
 class OrderViewTests(APITestCase):
     def setUp(self):
@@ -28,5 +29,6 @@ class OrderViewTests(APITestCase):
         }
         response = self.client.post(url, data, format='json')
         print(response.data)
+        print(LibraryEntry.objects.all())
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.data['items'][0]['product'], self.product.id)

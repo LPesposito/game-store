@@ -16,14 +16,14 @@ class WalletViewTests(APITestCase):
     def test_wallet_retrieve(self):
         url = reverse('wallet-balance')
         response = self.client.get(url)
-        print(response.data)
+        #print(response.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(float(response.data['balance']), 50)
 
     def test_wallet_add_funds(self):
         url = reverse('wallet-add-funds')
         response = self.client.post(url, {'amount': 50})
-        print(response.data)
+        #print(response.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.wallet.refresh_from_db()
         self.assertEqual(float(self.wallet.balance), 100)
@@ -32,7 +32,7 @@ class WalletViewTests(APITestCase):
     def test_wallet_withdraw(self):
         url = reverse('wallet-withdraw')
         response = self.client.post(url, {'amount': 30})
-        print(response.data)
+        #print(response.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.wallet.refresh_from_db()
         self.assertEqual(float(self.wallet.balance), 20)

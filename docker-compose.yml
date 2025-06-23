@@ -18,8 +18,8 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     container_name: loja-frontend
-    ports:
-      - "3000:80"
+    networks:
+      - frontend
 
   db:
     image: postgres:15
@@ -29,5 +29,12 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: game-store
-    ports:
-      - "5432:5432"
+    networks:
+      - backend
+  
+  networks:
+    backend:
+      driver: bridge
+    
+    frontend:
+      driver: bridge

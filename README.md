@@ -1,99 +1,140 @@
-# game-store
+# 🕹️ Game Store
 
-## Descrição do Projeto
+## 📖 Descrição do Projeto
 
-Este é um projeto Full Stack para gerenciar uma loja de jogos, com back-end em Django Rest Framework e front-end moderno. O sistema permite cadastro, consulta, atualização e exclusão de informações relacionadas a jogos, clientes e pedidos.
+Este é um projeto full-stack que simula uma loja digital de jogos, inspirado em plataformas como Steam, GOG e Epic Games. O sistema permite a venda de jogos digitais, criação de contas, gerenciamento de pedidos, biblioteca do usuário e carteira virtual.
 
-## Tecnologias Utilizadas
+A aplicação está dividida em back-end (Django REST Framework) e front-end (React).
 
-- **Back-end**
-  - Django Rest Framework
-  - Python
-  - Banco de Dados (ex.: PostgreSQL, SQLite, etc.)
-  - Poetry para gerenciamento de dependências
 
-- **Front-end**
-  - [Adicione aqui o framework/biblioteca, ex.: React, Vue, Angular]
-  - [Outras ferramentas relevantes do front-end]
+---
 
-## Como Executar o Projeto
+## ⚙️ Tecnologias Utilizadas
 
-### 1. Clone este repositório:
-```bash
+### 🔧 Back-end
+- **Python**
+- **Django**
+- **Django REST Framework**
+- **SQLite / PostgreSQL**
+- **Poetry** (gerenciador de dependências)
+- **JWT ou Token Auth (DRF Authtoken)** *(a definir)*
+- **Docker (opcional)**
+
+### 🎨 Front-end
+- **React.js** *(em desenvolvimento)*
+- **Axios**
+- **React Router DOM**
+
+---
+
+## 🚀 Como Executar o Projeto
+
+### 1. Clone o repositório:
+
+```
 git clone https://github.com/LPesposito/game-store
 ```
-
----
-
 ### 2. Back-end
-
-1. Acesse a pasta do back-end:
-   ```bash
-   cd backend
-   ```
-
-2. Instale o Poetry, caso ainda não tenha:
-   ```bash
-   pip install poetry
-   ```
-
-3. Instale as dependências:
-   ```bash
-   poetry install
-   ```
-
-4. Configure as variáveis de ambiente no arquivo `.env`.
-
-5. Execute as migrações do banco de dados:
-   ```bash
-   poetry run python manage.py migrate
-   ```
-
-6. Inicie o servidor:
-   ```bash
-   poetry run python manage.py runserver
-   ```
-
-O back-end estará disponível em `http://localhost:8000`.
-
----
+```
+cd backend
+poetry install
+poetry run python manage.py migrate
+poetry run python manage.py runserver
+```
+Acesse: http://localhost:8000/
 
 ### 3. Front-end
+```
+cd frontend
+npm install
+npm start
+```
+Acesse: http://localhost:3000/
 
-1. Acesse a pasta do front-end:
-   ```bash
-   cd frontend
-   ```
+### 🧩 Estrutura do Projeto (Back-end)
+| App         | Responsabilidade                                                             |
+| ----------- | ---------------------------------------------------------------------------- |
+| `product`   | Cadastro de jogos (produtos), categorias e imagens                           |
+| `order`     | Pedidos de compra realizados pelos usuários                                  |
+| `shop_cart` | Carrinho de compras antes de finalizar a compra                              |
+| `wallet`    | Sistema de carteira digital com saldo, transações e gerenciamento financeiro |
+| `library`   | Biblioteca de jogos comprados com chaves de acesso únicas                    |
+| `user`      | Gerenciamento de usuários e autenticação (com possibilidade de customização) |
 
-2. Instale as dependências (exemplo para projetos Node.js):
-   ```bash
-   npm install
-   # ou
-   yarn install
-   ```
 
-3. Inicie o servidor de desenvolvimento:
-   ```bash
-   npm start
-   # ou
-   yarn start
-   ```
+### 🔐 Segurança e Autenticação
+- As rotas protegidas exigem autenticação por Token.
 
-O front-end estará disponível em `http://localhost:3000` (ou na porta configurada).
+- As senhas são tratadas com hash seguro e transmitidas via HTTPS (quando em produção).
 
----
+- Cada recurso sensível está vinculado ao request.user, garantindo integridade e privacidade.
 
-## Funcionalidades **#WIP**
+### 📌 Funcionalidades Implementadas
+### ✅ Básico
+ - CRUD de produtos (jogos)
 
-- Gerenciamento de jogos (CRUD)
-- Gerenciamento de clientes (CRUD)
-- Gerenciamento de pedidos (CRUD)
-- Interface web amigável para interação com a API
+ - CRUD de categorias
 
-## Contribuição
+ - Upload de imagens para os jogos
 
-Contribuições são bem-vindas! Sinta-se à vontade para abrir issues e enviar pull requests.
+ - Sistema de usuários e autenticação com token
 
-## Licença
+### 🛒 Loja
+ - Adição de produtos ao carrinho
 
-Este projeto está licenciado sob a [MIT License](LICENSE).
+ - Finalização do pedido (Order)
+
+ - Cálculo automático de total
+
+ - Criação de OrderItem para múltiplos produtos
+
+### 👛 Wallet
+ - Carteira digital vinculada a cada usuário
+
+ - Adição e retirada de saldo
+
+ - Histórico de transações com timestamp
+
+### 🎮 Biblioteca
+ - Registro automático de produtos comprados
+
+ - Geração de chave de acesso (access_key)
+
+ - Visualização da biblioteca do usuário autenticado
+
+### 🔁 Fluxo de Compra
+   - A[Usuário] --> B[Adiciona produto ao carrinho]
+   - B --> C[Checkout / Criar Order]
+   - C --> D[Desconta saldo da Wallet]
+   - C --> E[Cria LibraryEntry com access_key]
+
+### 🧪 Testes
+- Testes unitários com pytest e pytest-django
+
+- Testes automatizados para:
+
+   - Orders
+
+   - Biblioteca
+
+   - Wallet
+
+   - Autenticação
+
+   - Validação de permissões
+
+### 🛠️ Em Desenvolvimento
+ - Integração com front-end React
+
+ - Validação de chaves de acesso (para simular download/autorização)
+
+ - Painel de admin personalizado
+
+ - Testes de integração
+
+### 🤝 Contribuição
+Contribuições são bem-vindas!
+Abra uma issue ou envie um PR.
+
+### 📄 Licença
+Este projeto está sob a licença MIT.
