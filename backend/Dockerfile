@@ -2,7 +2,10 @@
 FROM python:3.12-slim
 
 # Instala dependências do sistema
-RUN apt-get update && apt-get install -y curl build-essential
+
+RUN apt-get update && apt-get install -y curl build-essential \
+&& apt-get clean \ 
+&& rm -rf /var/lib/apt/lists/*
 
 # Instala o Poetry
 ENV POETRY_VERSION=1.8.2
