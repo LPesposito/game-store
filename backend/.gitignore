@@ -122,7 +122,7 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.env
+
 .venv
 env/
 venv/
@@ -162,4 +162,4 @@ cython_debug/
 #.idea/
 listTokens.py
 
-.env
+*.sqlite3

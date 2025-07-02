@@ -1,22 +1,40 @@
 from rest_framework import serializers
-from order.models.order import Order
-from product.models.product import Product
-from django.contrib.auth.models import User
+from order.models import Order, OrderItem
+from .order_item_serializer import OrderItemSerializer
+from django.db import transaction
+
 
 class OrderSerializer(serializers.ModelSerializer):
-    products = serializers.PrimaryKeyRelatedField(queryset=Product.objects.all(), many=True)
-    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+    items = OrderItemSerializer(many=True, required=True)
 
     class Meta:
         model = Order
-        fields = ['products', 'total', 'user','id']
-        read_only_fields = ['total', 'id']  
-        
+        fields = [
+            'id',
+            'created_at',
+            'total',
+            'items',
+            'user',
+            'status',  
+        ]
+        read_only_fields = ['total', 'id', 'created_at', 'user', 'status']
 
-    def create(self, validated_data) -> Order:
-        products_data = validated_data.pop('products')
-        user = validated_data.pop('user')
+    @transaction.atomic
+    def create(self, validated_data):
+        request = self.context['request']
+        user = request.user  
+
+        items_data = validated_data.pop('items')
         order = Order.objects.create(user=user, **validated_data)
-        order.products.set(products_data)  # Associate products with the order
-        order.save()  # The total will be calculated in the model's save method
+
+        total = 0
+        for item_data in items_data:
+            price = item_data['price']
+            quantity = item_data['quantity']
+            total += price * quantity
+            OrderItem.objects.create(order=order, **item_data)
+
+        order.total = total
+        order.save()
+
         return order
