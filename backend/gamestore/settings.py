@@ -56,6 +56,7 @@ THIRD_PARTY_APPS = [
     'django_extensions',
     'debug_toolbar',
     'rest_framework.authtoken',
+    'corsheaders',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + MY_APPS
@@ -69,6 +70,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'gamestore.urls'
@@ -170,3 +172,7 @@ REST_FRAMEWORK = {
 }
 
 AUTH_USER_MODEL = 'user.CustomUser'
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+]
