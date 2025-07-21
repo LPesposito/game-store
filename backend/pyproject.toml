@@ -22,6 +22,7 @@ django-cors-headers = "^4.7.0"
 whitenoise = "^6.9.0"
 gunicorn = "^23.0.0"
 dj-database-url = "^3.0.1"
+drf-yasg = "^1.21.10"
 
 
 [tool.poetry.group.dev.dependencies]

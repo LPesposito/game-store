@@ -58,6 +58,7 @@ THIRD_PARTY_APPS = [
     'debug_toolbar',
     'rest_framework.authtoken',
     'corsheaders',
+    'drf_yasg',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + MY_APPS
