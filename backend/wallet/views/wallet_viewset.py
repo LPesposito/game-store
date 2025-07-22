@@ -7,6 +7,9 @@ from wallet.models import Transaction
 from decimal import Decimal
 
 class WalletViewSet(viewsets.GenericViewSet):
+    swagger_schema_fields = {
+        "tags": ["wallet"]
+    }
     permission_classes = [permissions.IsAuthenticated]
 
 
