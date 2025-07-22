@@ -8,9 +8,7 @@ class TransactionViewSet(
     mixins.CreateModelMixin,
     viewsets.GenericViewSet
 ):
-    swagger_schema_fields = {
-        "tags": ["wallet"]
-    }
+    swagger_schema_fields = {"tags": ["wallet"]}
     serializer_class = TransactionSerializer
     permission_classes = [IsAuthenticated]
 
@@ -21,3 +19,4 @@ class TransactionViewSet(
     def perform_create(self, serializer):
         wallet = self.request.user.wallet
         serializer.save(wallet=wallet)
+

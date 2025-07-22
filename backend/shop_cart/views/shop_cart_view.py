@@ -9,9 +9,7 @@ class CartViewSet(
     mixins.UpdateModelMixin,
     viewsets.GenericViewSet
 ):
-    swagger_schema_fields = {
-        "tags": ["shop_cart"]
-    }
+    swagger_schema_fields = {"tags": ["shop_cart"]}
     queryset = Cart.objects.all()
     serializer_class = CartSerializer
     permission_classes = [permissions.IsAuthenticated]
@@ -24,3 +22,4 @@ class CartViewSet(
         cart, _ = Cart.objects.get_or_create(user=request.user)
         serializer = self.get_serializer(cart)
         return Response(serializer.data)
+

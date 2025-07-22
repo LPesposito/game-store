@@ -7,9 +7,7 @@ from wallet.models import Transaction
 from decimal import Decimal
 
 class WalletViewSet(viewsets.GenericViewSet):
-    swagger_schema_fields = {
-        "tags": ["wallet"]
-    }
+    swagger_schema_fields = {"tags": ["wallet"]}
     permission_classes = [permissions.IsAuthenticated]
 
 
@@ -69,5 +67,7 @@ class WalletViewSet(viewsets.GenericViewSet):
     @action(detail=False, methods=['get'], url_path='balance')
     def balance(self, request):
         wallet = Wallet.objects.get(user=request.user)
+        serializer = WalletSerializer(wallet)
+        return Response({'balance': serializer.data['balance']}, status=status.HTTP_200_OK)
         serializer = WalletSerializer(wallet)
         return Response({'balance': serializer.data['balance']}, status=status.HTTP_200_OK)

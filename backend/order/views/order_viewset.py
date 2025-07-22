@@ -13,9 +13,7 @@ class OrderViewSet(
     mixins.ListModelMixin,
     viewsets.GenericViewSet
 ):
-    swagger_schema_fields = {
-        "tags": ["Order"]
-    }
+    swagger_schema_fields = {"tags": ["Order"]}
     serializer_class = OrderSerializer
     permission_classes = [IsAuthenticated]
 
