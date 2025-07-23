@@ -9,7 +9,3 @@ class CategoryViewSet(ModelViewSet):
     
     def get_queryset(self): # type: ignore
         return Category.objects.all().order_by('title')
-    
-    swagger_schema_fields = {
-        "tags": ["product"]
-    }

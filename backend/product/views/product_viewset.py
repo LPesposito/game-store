@@ -11,7 +11,3 @@ class ProductViewSet(ModelViewSet):
     
     class Meta:
         ordering = ['id']
-    
-    swagger_schema_fields = {
-        "tags": ["product"]
-    }

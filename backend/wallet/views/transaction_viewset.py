@@ -8,7 +8,6 @@ class TransactionViewSet(
     mixins.CreateModelMixin,
     viewsets.GenericViewSet
 ):
-    swagger_schema_fields = {"tags": ["wallet"]}
     serializer_class = TransactionSerializer
     permission_classes = [IsAuthenticated]
 
